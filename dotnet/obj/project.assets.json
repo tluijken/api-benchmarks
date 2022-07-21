@@ -988,25 +988,26 @@
     ]
   },
   "packageFolders": {
-    "/home/thomas/.nuget/packages/": {}
+    "/Users/mkooiman/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/thomas/projects/tests/benchmarks/dotnet/TodoApi.App.csproj",
+      "projectUniqueName": "/Users/mkooiman/Documents/api-benmarks/dotnet/TodoApi.App.csproj",
       "projectName": "TodoApi.App",
-      "projectPath": "/home/thomas/projects/tests/benchmarks/dotnet/TodoApi.App.csproj",
-      "packagesPath": "/home/thomas/.nuget/packages/",
-      "outputPath": "/home/thomas/projects/tests/benchmarks/dotnet/obj/",
+      "projectPath": "/Users/mkooiman/Documents/api-benmarks/dotnet/TodoApi.App.csproj",
+      "packagesPath": "/Users/mkooiman/.nuget/packages/",
+      "outputPath": "/Users/mkooiman/Documents/api-benmarks/dotnet/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/thomas/.nuget/NuGet/NuGet.Config"
+        "/Users/mkooiman/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.pkg.github.com/Baseflow/index.json": {}
       },
       "frameworks": {
         "net6.0": {
@@ -1071,20 +1072,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.0, 6.0.0]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.linux-x64",
-            "version": "[6.0.0, 6.0.0]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.0, 6.0.0]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1093,7 +1080,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib64/dotnet/sdk/6.0.100/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.300/RuntimeIdentifierGraph.json"
       }
     }
   }

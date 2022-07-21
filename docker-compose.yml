@@ -48,3 +48,15 @@ services:
       - DOTNET_TieredPGO=1
       - DOTNET_ReadyToRun="0"
       - DOTNET_TC_QuickJitForLoops="1"
+  todo_api_java:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: todo-api-java:local
+    container_name: todo_api_java_local 
+    build:
+      context: ./java/api-benchmark.java.vertx/
+      dockerfile: DockerFile
+    ports:
+      - 8081:8081
+
