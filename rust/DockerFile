@@ -1,0 +1,11 @@
+FROM rust:1.61 AS builder
+COPY . .
+RUN cargo build --release
+
+FROM debian:buster-slim
+COPY --from=builder ./target/release/todo_api ./target/release/todo_api
+COPY --from=builder ./migrations ./target/migrations
+RUN echo "deb http://ftp.us.debian.org/debian/ buster main contrib non-free" > /etc/apt/sources.list.d/pgdg.list
+RUN apt update --yes && apt install --yes libpq-dev/buster 
+EXPOSE 8080
+CMD ["/target/release/todo_api"]

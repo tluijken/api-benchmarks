@@ -1,0 +1,25 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+WORKDIR /app
+
+COPY ./ ./
+
+RUN \
+    dotnet restore ./TodoApi.App.csproj --runtime alpine-x64 && \
+    dotnet clean   ./TodoApi.App.csproj && \
+    dotnet publish ./TodoApi.App.csproj -c Release -o out  \
+    --no-restore \
+    --runtime alpine-x64 \
+    --self-contained true \
+    -p:PublishTrimmed=true \
+    -p:PublishSingleFile=true \
+    -p:EnableCompressionInSingleFile=true \
+    -p:TrimMode=Link 
+
+FROM mcr.microsoft.com/dotnet/runtime-deps:6.0-alpine AS base
+
+WORKDIR /app
+
+COPY --from=build /app/out ./
+EXPOSE 80
+EXPOSE 443
+ENTRYPOINT ["./TodoApi.App"]

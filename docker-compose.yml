@@ -1,0 +1,50 @@
+version: "3.9"
+networks:
+  default:
+    name: todo_api
+services:
+  db:
+    image: "postgres"
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: todo_api_rw
+      POSTGRES_PASSWORD: hello_rust
+      POSTGRES_DB: todo_api
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U todo_api_rw -d todo_api" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes: 
+      - ./database/docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+  todo_api_rust:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: todo-api-rust:local
+    container_name: todo_api_rust_local 
+    build:
+      context: ./rust
+      dockerfile: DockerFile
+    ports:
+      - 8080:8080
+    environment:
+      - DATABASE_URL=postgres://todo_api_rw:hello_rust@db/todo_api
+  todo_api_dotnet:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: todo-api-dotnet:local
+    container_name: todo_api_net_local 
+    build:
+      context: ./dotnet
+      dockerfile: DockerFile
+    ports:
+      - 80:80
+    environment:
+      - DATABASE_URL=Host=db;Database=todo_api;Username=todo_api_rw;Password=hello_rust
+      - DOTNET_TieredPGO=1
+      - DOTNET_ReadyToRun="0"
+      - DOTNET_TC_QuickJitForLoops="1"
