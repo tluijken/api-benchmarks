@@ -1,0 +1,15 @@
+{
+  "name": "api-benchmark",
+  "packageManager": "yarn@3.2.2",
+  "scripts": {
+    "build": "yarn tsc"
+  },
+  "dependencies": {
+    "postgres": "^3.2.4"
+  },
+  "devDependencies": {
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.0.6",
+    "typescript": "4.4"
+  }
+}

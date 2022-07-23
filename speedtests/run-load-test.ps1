@@ -4,3 +4,4 @@ Write-Output "Load testing with Grafana dashboard http://localhost:3000/d/k6/k6-
 Write-Output "--------------------------------------------------------------------------------------"
 docker-compose run --rm k6 run /scripts/rust.js
 docker-compose run --rm k6 run /scripts/dotnet.js
+docker-compose run --rm k6 run /scripts/node.js

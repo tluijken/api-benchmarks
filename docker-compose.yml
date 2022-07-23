@@ -48,3 +48,16 @@ services:
       - DOTNET_TieredPGO=1
       - DOTNET_ReadyToRun="0"
       - DOTNET_TC_QuickJitForLoops="1"
+  todo_api_node:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: todo-api-node:local
+    container_name: todo_api_node_local
+    build:
+      context: ./nodejs
+      dockerfile: DockerFile
+    ports:
+      - 1337:1337
+    environment:
+      - DATABASE_URL=postgres://todo_api_rw:hello_rust@db:5432/todo_api
