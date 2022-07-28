@@ -44,10 +44,7 @@ services:
     ports:
       - 80:80
     environment:
-      - DATABASE_URL=Host=db;Database=todo_api;Username=todo_api_rw;Password=hello_rust;Command Timeout=0;Connection Idle Lifetime=10;Maximum Pool Size=10;
-      - DOTNET_TieredPGO=1
-      - DOTNET_ReadyToRun="0"
-      - DOTNET_TC_QuickJitForLoops="1"
+      - DATABASE_URL=host=db;database=todo_api;username=todo_api_rw;password=hello_rust;command timeout=0;connection idle lifetime=10;maximum pool size=10;
   todo_api_node:
     depends_on:
       db:
@@ -61,3 +58,19 @@ services:
       - 1337:1337
     environment:
       - DATABASE_URL=postgres://todo_api_rw:hello_rust@db:5432/todo_api
+  todo_api_go:
+    depends_on:
+      db:
+        condition: service_healthy
+    image: todo-api-go:local
+    container_name: todo_api_go_local 
+    build:
+      context: ./go
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    environment:
+      - DB_HOST=db
+      - DB_USER=todo_api_rw
+      - DB_PASSWORD=hello_rust
+      - DB_NAME=todo_api
