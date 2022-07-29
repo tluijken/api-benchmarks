@@ -1,16 +1,33 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.16-alpine
+FROM golang:1.18-bullseye as base
 
-WORKDIR /app
+RUN adduser \
+  --disabled-password \
+  --gecos "" \
+  --home "/nonexistent" \
+  --shell "/sbin/nologin" \
+  --no-create-home \
+  --uid 65532 \
+  small-user
 
-COPY go.mod ./
-COPY go.sum ./
+WORKDIR $GOPATH/src/smallest-golang/app/
+
+COPY . .
+
 RUN go mod download
+RUN go mod verify
 
-COPY *.go ./
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /todo_api .
 
-RUN go build -o /todo_api
+FROM scratch
 
-EXPOSE 8081
+COPY --from=base /usr/share/zoneinfo /usr/share/zoneinfo
+COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=base /etc/passwd /etc/passwd
+COPY --from=base /etc/group /etc/group
 
-CMD [ "/todo_api" ]
+COPY --from=base /todo_api .
+
+USER small-user:small-user
+
+CMD ["./todo_api"]
