@@ -1,10 +1,12 @@
-FROM rust:1.61 AS builder
-COPY . .
-RUN RUSTFLAGS="-C target-cpu=native" cargo build --release
+FROM clux/muslrust
+RUN mkdir /source
+WORKDIR /source
+COPY ./Cargo.toml .
+COPY ./Cargo.lock .
+COPY ./src/ ./src/
+RUN cargo build --release
+RUN strip ./target/x86_64-unknown-linux-musl/release/todo_api
 
-FROM debian:buster-slim
-COPY --from=builder ./target/release/todo_api ./target/release/todo_api
-RUN echo "deb http://ftp.us.debian.org/debian/ buster main contrib non-free" > /etc/apt/sources.list.d/pgdg.list
-RUN apt update --yes && apt install --yes libpq-dev/buster 
-EXPOSE 8080
-CMD ["/target/release/todo_api"]
+FROM scratch
+COPY --from=0 /source/target/x86_64-unknown-linux-musl/release/todo_api /
+CMD ["./todo_api"]

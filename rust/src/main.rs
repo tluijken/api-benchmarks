@@ -1,3 +1,5 @@
+// Needed for musl builds.
+extern crate openssl;
 #[macro_use]
 extern crate diesel;
 

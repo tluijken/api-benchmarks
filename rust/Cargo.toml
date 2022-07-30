@@ -16,6 +16,9 @@ diesel = { version = "1.4.8", features = ["postgres", "r2d2"] }
 dotenv = "0.15.0"
 r2d2 = "0.8.9"
 
+# Needed for Postgres with musl builds.
+openssl = "*"
+
 [profile.release]
 lto = "fat"
 
